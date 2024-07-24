@@ -9,11 +9,10 @@ jobs:
     steps:
         - name: Checkout code
           uses: actions/checkout@v4
-        - uses: actions/setup-python@v5
         - name: Install dependencies
           run: |
-            python -m pip install --upgrade pip
-            pip install tft-cli
+            dnf -y install python3
+            pip3 install tft-cli
         - name: Run testing-farm sanity test
           env:
             TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
