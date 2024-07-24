@@ -4,7 +4,7 @@ on:
   push:
   pull_request:
 jobs:
-  molecule:
+  sanity:
     runs-on: testing-farm
     steps:
         - name: Checkout code
