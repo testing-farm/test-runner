@@ -1,0 +1,20 @@
+---
+name: Sanity test testing farm github runners
+on:
+  push:
+  pull_request:
+jobs:
+  molecule:
+    runs-on: testing-farm
+    steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install tft-cli
+        - name: Run testing-farm sanity test
+          env:
+            TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
+          run: |
+            testing-farm request --compose Fedora-40 --plan /testing-farm/sanity --git-url https://gitlab.com/testing-farm/tests
