@@ -7,13 +7,15 @@ jobs:
   sanity:
     runs-on: testing-farm
     steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-        - name: Install dependencies
-          run: |
-            pip3 install --user tft-cli
         - name: Run testing-farm sanity test
           env:
             TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
           run: |
             testing-farm request --compose Fedora-40 --plan /testing-farm/sanity --git-url https://gitlab.com/testing-farm/tests
+
+        - name: Run testing-farm reservation test
+          env:
+            TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
+          run: |
+            testing-farm reserve --compose Fedora-40 --duration 1 |& tee output <<< "exit"
+            ssh -oUserKnownHostsFile=/dev/null $(grep -Eo root@[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+ output) return2testingfarm
