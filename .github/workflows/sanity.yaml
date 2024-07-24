@@ -11,8 +11,7 @@ jobs:
           uses: actions/checkout@v4
         - name: Install dependencies
           run: |
-            dnf -y install python3
-            pip3 install tft-cli
+            pip3 install --user tft-cli
         - name: Run testing-farm sanity test
           env:
             TESTING_FARM_API_TOKEN: ${{ secrets.TESTING_FARM_API_TOKEN }}
